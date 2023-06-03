@@ -18,15 +18,35 @@ public class ContentAS {
         this.contentRepository = contentRepository;
     }
 
-    public Content createContent(ContentDTO contentDTO) {
+    public ContentDTO createContent(ContentDTO contentDTO) {
         Content content = new Content();
         content.setTitle(contentDTO.getTitle());
         content.setBody(contentDTO.getBody());
 
-        return contentRepository.save(content);
+        content = contentRepository.save(content);
+
+        ContentDTO createdContentDTO = new ContentDTO();
+        createdContentDTO.setId(content.getId());
+        createdContentDTO.setTitle(content.getTitle());
+        createdContentDTO.setBody(content.getBody());
+
+        return createdContentDTO;
     }
 
     public List<Content> listAll() {
         return contentRepository.findAll();
+    }
+
+    public void updateContent(ContentDTO contentDTO) {
+        Content content = contentRepository.findById(contentDTO.getId()).orElseThrow(() -> new RuntimeException("Content not found"));
+        content.setTitle(contentDTO.getTitle());
+        content.setBody(contentDTO.getBody());
+
+        contentRepository.save(content);
+    }
+
+    public void deleteContent(ContentDTO contentDTO) {
+        Content content = contentRepository.findById(contentDTO.getId()).orElseThrow(() -> new RuntimeException("Content not found"));
+        contentRepository.delete(content);
     }
 }

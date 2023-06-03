@@ -30,4 +30,18 @@ public class ContentController {
 
         return contentDTO;
     }
+
+    @PutMapping("/update")
+    public ContentDTO update(@RequestBody ContentDTO contentDTO) {
+        contentAS.updateContent(contentDTO);
+
+        return contentDTO;
+    }
+
+    @DeleteMapping("/delete")
+    public ContentDTO delete(@RequestBody ContentDTO contentDTO) {
+        contentAS.deleteContent(contentDTO);
+
+        return contentDTO;
+    }
 }
