@@ -1,18 +1,33 @@
 package com.erinthon.coreai.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.erinthon.coreai.dto.ContentDTO;
+import com.erinthon.coreai.model.Content;
+import com.erinthon.coreai.service.ContentAS;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/content")
 public class ContentController {
 
-    @GetMapping
-    public String index() {
-        return "Hello World!";
+    private final ContentAS contentAS;
+
+    @Autowired
+    public ContentController(ContentAS contentAS) {
+        this.contentAS = contentAS;
     }
 
+    @GetMapping
+    public List<Content> listAll() {
+        return contentAS.listAll();
+    }
 
+    @PostMapping("/create")
+    public ContentDTO create(@RequestBody ContentDTO contentDTO) {
+        contentAS.createContent(contentDTO);
 
+        return contentDTO;
+    }
 }
